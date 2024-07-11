@@ -1,6 +1,6 @@
 <template>
     <div class="book-card">
-        <img :src="book.coverPageUrl" alt="Book Cover" class="book-cover" />
+        <img :src="bookCoverUrl" alt="Book Cover" class="book-cover" />
         <div class="book-details">
             <h2>{{ book.title }}</h2>
             <p>{{ book.authorName || 'Unknown Author' }}</p>
@@ -9,8 +9,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import { computed, defineComponent, type PropType } from 'vue';
 import { BookResponse } from '../model/BookResponse';
+import defaultCover from '../assets/404_temp.jpg';
 
 export default defineComponent({
     props: {
@@ -18,6 +19,15 @@ export default defineComponent({
             type: Object as PropType<BookResponse>,
             required: true
         }
+    },
+    setup(props) {
+        const bookCoverUrl = computed(() => {
+            return props.book.coverPageUrl || defaultCover;
+        });
+
+        return {
+            bookCoverUrl
+        };
     }
 });
 </script>

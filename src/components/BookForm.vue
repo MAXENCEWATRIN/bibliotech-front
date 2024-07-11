@@ -5,6 +5,7 @@
       <div>
         <label for="title">Title</label>
         <input type="text" v-model="book.title" required />
+        {{ book.title }}
       </div>
       <div>
         <label for="authorName">Author</label>
@@ -17,15 +18,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { defineComponent, onMounted } from 'vue';
+import axios from 'axios';
+import { useRoute, useRouter } from 'vue-router';
+import type { GetOneBookResponse } from '../model/GetOneBookResponse';
 import { useBookStore } from '../store/bookStore';
-import type { BookResponse } from '../model/BookResponse';
 
 export default defineComponent({
   setup() {
     const bookStore = useBookStore();
-    const book = ref<BookResponse>(bookStore.book || {
+    const book = ref<GetOneBookResponse>(bookStore.book || {
       id: null,
       isbnId: null,
       oldIsbnId: null,
@@ -42,10 +44,10 @@ export default defineComponent({
       initialLanguage: '',
       firstPublishYear: 0,
       firstSentence: '',
-      editor: {},
-      library: {},
+      editor: null,
+      library: null,
       themes: [],
-      owner: {},
+      owner: null,
       isWishList: false,
       overallReception: '',
       praises: '',
@@ -56,10 +58,13 @@ export default defineComponent({
 
     const isEditMode = ref(false);
     const route = useRoute();
+    const router = useRouter();
 
     onMounted(() => {
+      console.log('TEST : ' + bookStore.book)
       if (bookStore.book) {
         book.value = bookStore.book;
+        console.log(book.value)
         bookStore.clearBook(); // Reset the store value
       } else if (route.params.id) {
         // Fetch book by id if not coming from WebSocket
@@ -72,6 +77,7 @@ export default defineComponent({
       try {
         const response = await axios.get(`http://localhost:8080/biblioto/books/${id}`);
         book.value = response.data;
+        console.log('FETCH : ' + book.value)
       } catch (error) {
         console.error('Error fetching book:', error);
       }
@@ -98,22 +104,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style>
-.book-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-.book-cover {
-  max-width: 100%;
-  height: auto;
-  border-radius: 10px;
-}
-
-.book-details {
-  margin-top: 10px;
-}
-</style>

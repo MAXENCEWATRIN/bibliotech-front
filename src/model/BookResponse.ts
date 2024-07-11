@@ -4,9 +4,9 @@ import type { ThemeResponse } from './ThemeResponse';
 import type { OwnerResponse } from './OwnerResponse';
   
   export interface BookResponse {
-    id: number;
-    isbnId: number;
-    oldIsbnId: number;
+    id: number | null;
+  isbnId: number | null;
+  oldIsbnId: number | null;
     title: string;
     authorName: string;
     titleLong: string;
