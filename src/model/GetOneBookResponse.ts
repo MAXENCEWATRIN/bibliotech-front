@@ -1,6 +1,6 @@
 import type { BookResponse } from './BookResponse';
   
-  export interface BibliotoBackResponsePattern {
+  export interface GetOneBookResponse {
     success: boolean;
-    data: BookResponse[];
+    data: BookResponse;
   }

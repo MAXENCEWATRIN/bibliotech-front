@@ -4,21 +4,12 @@
     <form @submit.prevent="saveBook">
       <div>
         <label for="title">Title</label>
-        <input type="text" v-model="bookRequest.data.title" required>
+        <input type="text" v-model="response.data" required>
       </div>
       <div>
-        <label for="titleLong">Long title</label>
-        <input type="text" v-model="bookRequest.data.titleLong">
+        <label for="authorName">Author</label>
+        <input type="text" v-model="response.data" required>
       </div>
-      <div>
-        <label for="subtitle">Subtitle</label>
-        <input type="text" v-model="bookRequest.data.subtitle" required>
-      </div>
-      <div>
-        <label for="authorName">Author name</label>
-        <input type="text" v-model="bookRequest.data.authorName" required>
-      </div>
-
       <!-- Ajouter les autres champs ici -->
       <button type="submit">{{ isEditMode ? 'Update' : 'Create' }}</button>
     </form>
@@ -29,7 +20,7 @@
   import { defineComponent } from 'vue';
   import axios from 'axios';
   import { useRoute, useRouter } from 'vue-router';
-  import type { GetOneBookRequest } from '../model/GetOneBookRequest';
+  import type { GetOneBookResponse } from '../model/GetOneBookResponse';
 
   export default defineComponent({
     data() {
@@ -37,7 +28,11 @@
         bookRequest: {
         success: false,
         data: {}
-      } as GetOneBookRequest,
+      } as GetOneBookResponse,
+      bookReponse: {
+        success: false,
+        data: {}
+      } as GetOneBookResponse,
       isEditMode: false
     };
     },
@@ -54,15 +49,16 @@
       },
       saveBook() {
         if (this.isEditMode) {
-          axios.put(`http://localhost:8080/biblioto/books/${this.bookRequest.data.id}`, this.bookRequest.data)
+          axios.put(`http://localhost:8080/biblioto/books/${this.response.data.id}`, this.response.data)
             .then(() => {
+              
               this.$router.push('/');
             })
             .catch((error: any) => {
               console.error("There was an error!", error);
             });
         } else {
-          axios.post('http://localhost:8080/biblioto/books', this.bookRequest.data)
+          axios.post('http://localhost:8080/biblioto/books', this.response.data)
             .then((response: { data: any; }) => {
               console.log('Fetched book data:', response.data);
               this.$router.push('/');

@@ -14,7 +14,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import axios from 'axios';
-import type { BibliotoBackResponsePattern } from '../model/BibliotoBackResponsePattern';
+import type { GetAllBooksResponse } from '../model/GetAllBooksResponse';
 
 
 export default defineComponent({
@@ -23,7 +23,7 @@ export default defineComponent({
         response: {
         success: false,
         data: {}
-      } as BibliotoBackResponsePattern
+      } as GetAllBooksResponse
     };
     },
   methods: {
