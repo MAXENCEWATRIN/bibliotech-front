@@ -12,8 +12,12 @@
   </div>
   <div>
     <h1>Books Carousel</h1>
+    <select v-model="selectedTheme" @change="filterBooks">
+      <option value="">All Themes</option>
+      <option v-for="theme in themes" :key="theme">{{ theme }}</option>
+    </select>
     <Carousel :items-to-show="2.5" :wrap-around="true">
-      <Slide v-for="book in response.data" :key="book.id">
+      <Slide v-for="book in filteredBooks" :key="book.id">
         <div class="carousel__item">
           <BookCard :book="book" />
         </div>
@@ -28,7 +32,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref, computed, onMounted } from 'vue';
 import axios from 'axios';
 import type { GetAllBooksResponse } from '../model/GetAllBooksResponse';
 import 'vue3-carousel/dist/carousel.css';
@@ -45,39 +49,60 @@ export default defineComponent({
     Pagination,
     Navigation,
   },
-  data() {
+  setup() {
+    const response = ref<GetAllBooksResponse>({
+      success: false,
+      data: [],
+    });
+    const themes = ref<string[]>([]);
+    const selectedTheme = ref<string>('');
+
+    const fetchBooks = async () => {
+      try {
+        const result = await axios.get('http://localhost:8080/biblioto/books');
+        response.value = result.data;
+        const allThemes = new Set<string>();
+        response.value.data.forEach(book => {
+          book.themes.forEach(theme => {
+            allThemes.add(theme.name);
+          });
+        });
+        themes.value = Array.from(allThemes);
+      } catch (error) {
+        console.error('There was an error!', error);
+      }
+    };
+
+    const filteredBooks = computed(() => {
+      if (!selectedTheme.value) {
+        return response.value.data;
+      }
+      return response.value.data.filter(book =>
+        book.themes.some(theme => theme.name === selectedTheme.value)
+      );
+    });
+
+    const deleteBook = async (book: BookResponse) => {
+      try {
+        await axios.delete(`http://localhost:8080/biblioto/books/${book.id}`, {
+          data: { book },
+        });
+        fetchBooks();
+      } catch (error) {
+        console.error('There was an error!', error);
+      }
+    };
+
+    onMounted(fetchBooks);
+
     return {
-      response: {
-        success: false,
-        data: {}
-      } as GetAllBooksResponse
+      response,
+      themes,
+      selectedTheme,
+      filteredBooks,
+      deleteBook,
     };
   },
-  methods: {
-    fetchBooks() {
-      axios.get('http://localhost:8080/biblioto/books')
-        .then((response: { data: any; }) => {
-          this.response = response.data;
-        })
-        .catch((error: any) => {
-          console.error("There was an error!", error);
-        });
-    },
-    deleteBook(book: BookResponse) {
-      axios.delete(`http://localhost:8080/biblioto/books/${book.id}`, {
-        data: { book }
-      })
-        .then(() => {
-          this.fetchBooks();
-        })
-        .catch((error: any) => {
-          console.error("There was an error!", error);
-        });
-    }
-  },
-  created() {
-    this.fetchBooks();
-  }
 });
 </script>
 <style>
