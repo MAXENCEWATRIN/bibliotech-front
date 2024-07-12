@@ -1,10 +1,12 @@
 <template>
     <div class="book-card">
-        <img :src="bookCoverUrl" alt="Book Cover" class="book-cover" />
-        <div class="book-details">
-            <h2>{{ book.title }}</h2>
-            <p>{{ book.authorName || 'Unknown Author' }}</p>
-        </div>
+        <router-link :to="{ name: 'BookForm', params: { id: book.id } }">
+            <img :src="bookCoverUrl" alt="Book Cover" class="book-cover" />
+            <div class="book-details">
+                {{ book.title }}
+                <p>{{ book.authorName || 'Unknown Author' }}</p>
+            </div>
+        </router-link>
     </div>
 </template>
 
@@ -38,6 +40,7 @@ export default defineComponent({
     flex-direction: column;
     align-items: center;
     text-align: center;
+    background-color: #181818;
 }
 
 .book-cover {

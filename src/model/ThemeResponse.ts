@@ -1,3 +1,5 @@
 export interface ThemeResponse {
-    // Définir les champs de ThemeResponse ici
+  id: number;
+  name: string;
+  keywords: string[];
   }
