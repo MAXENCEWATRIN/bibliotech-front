@@ -1,4 +1,5 @@
 import './assets/main.css'
+import './assets/tailwind.css';
 //pour le webSocket
 import './global-polyfill';
 import { createApp } from 'vue'

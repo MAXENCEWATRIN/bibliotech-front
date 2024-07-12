@@ -5,7 +5,7 @@
     <ul>
       <li v-for="book in response.data" :key="book.id">
         <router-link :to="{ name: 'BookForm', params: { id: book.id } }">{{ book.title }}</router-link>
-        <button @click="deleteBook(book.id)">Delete</button>
+        <button @click="deleteBook(book)">Delete</button>
 
       </li>
     </ul>
@@ -34,6 +34,7 @@ import type { GetAllBooksResponse } from '../model/GetAllBooksResponse';
 import 'vue3-carousel/dist/carousel.css';
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel';
 import BookCard from '../components/BookCard.vue';
+import type { BookResponse } from '@/model/BookResponse';
 
 export default defineComponent({
   name: 'WrapAround',
@@ -62,8 +63,10 @@ export default defineComponent({
           console.error("There was an error!", error);
         });
     },
-    deleteBook(id: number) {
-      axios.delete(`http://localhost:8080/biblioto/books/${id}`)
+    deleteBook(book: BookResponse) {
+      axios.delete(`http://localhost:8080/biblioto/books/${book.id}`, {
+        data: { book }
+      })
         .then(() => {
           this.fetchBooks();
         })

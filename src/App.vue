@@ -1,6 +1,13 @@
-<script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+<script lang="ts">
+import { defineComponent } from 'vue';
+import NavigationMenu from './components/NavigationMenu.vue';
+
+export default defineComponent({
+  name: 'App',
+  components: {
+    NavigationMenu,
+  },
+});
 </script>
 
 <template>
@@ -9,8 +16,9 @@ import HelloWorld from './components/HelloWorld.vue'
 
     <div class="wrapper">
       <HelloWorld msg="You did it!" />
-
+      <NavigationMenu />
       <nav>
+
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
       </nav>
