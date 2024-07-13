@@ -122,6 +122,7 @@ import { useRoute } from 'vue-router';
 import { useBookStore } from '../store/bookStore';
 import axios from 'axios';
 import type { BookResponse } from '../model/BookResponse';
+import bookService from '../service/BookService';
 import router from '@/router';
 
 export default defineComponent({
@@ -139,6 +140,7 @@ export default defineComponent({
       summary: '',
       numberOfPage: 0,
       openLibraryId: '',
+      cover: '',
       coverPageUrl: '',
       traductionLanguage: '',
       initialLanguage: '',
@@ -162,32 +164,16 @@ export default defineComponent({
     onMounted(() => {
       if (bookStore.book) {
         book.value = bookStore.book;
-        bookStore.clearBook(); // Reset the store value
+        bookStore.clearBook();
       } else if (route.params.id) {
         // Fetch book by id if not coming from WebSocket
         isEditMode.value = true;
-        fetchBook(Number(route.params.id));
+        bookService.getBookDetails(Number(route.params.id));
       }
     });
-
-    const fetchBook = async (id: number) => {
-      try {
-        const response = await axios.get(`http://localhost:8080/biblioto/books/${id}`);
-        if (response.status == 200) {
-          book.value = response.data.data;
-        }
-      } catch (error) {
-        console.error('Error fetching book:', error);
-      }
-    };
-
     const saveBook = async () => {
       try {
-        if (isEditMode.value) {
-          await axios.put(`http://localhost:8080/biblioto/books/${book.value.id}`, book.value);
-        } else {
-          await axios.post('http://localhost:8080/biblioto/books', book.value);
-        }
+        await bookService.saveBook(book.value, isEditMode.value);
         router.push('/');
       } catch (error) {
         console.error('Error saving book:', error);
@@ -196,13 +182,12 @@ export default defineComponent({
 
     const deleteBook = async (id: number) => {
       try {
-        await axios.delete(`http://localhost:8080/biblioto/books/${id}`);
+        await bookService.deleteBook(id);
         router.push('/');
       } catch (error) {
         console.error('Error deleting book:', error);
       }
     };
-
     return {
       book,
       isEditMode,

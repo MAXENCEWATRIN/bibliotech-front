@@ -35,7 +35,6 @@ import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel';
 import BookCard from '../components/BookCard.vue';
 import 'vue3-carousel/dist/carousel.css'
 import bookService from '../service/BookService';
-import type { BookResponse } from '@/model/BookResponse';
 import type { GetAllBooksResponse } from '../model/GetAllBooksResponse';
 
 
@@ -62,7 +61,8 @@ export default defineComponent({
         const result = await bookService.fetchBooks();
         response.value = result.data;
         const allThemes = new Set<string>();
-        response.value.data.forEach(async book => {
+
+        await Promise.all(response.value.data.map(async book => {
           try {
             const bookCoverResponse = await bookService.getBookCover(book.id);
             if (bookCoverResponse.status === 200) {
@@ -78,7 +78,7 @@ export default defineComponent({
           book.themes.forEach(theme => {
             allThemes.add(theme.name);
           });
-        });
+        }));
         themes.value = Array.from(allThemes);
       } catch (error) {
         console.error('There was an error!', error);
@@ -93,17 +93,6 @@ export default defineComponent({
         book.themes.some(theme => theme.name === selectedTheme.value)
       );
     });
-
-    const deleteBook = async (book: BookResponse) => {
-      try {
-        await axios.delete(`http://localhost:8080/biblioto/books/${book.id}`, {
-          data: { book },
-        });
-        fetchBooks();
-      } catch (error) {
-        console.error('There was an error!', error);
-      }
-    };
 
     const filterBooks = () => {
       // Update the key to force the carousel to re-render
@@ -121,7 +110,6 @@ export default defineComponent({
       themes,
       selectedTheme,
       filteredBooks,
-      deleteBook,
       carouselKey
     };
   },

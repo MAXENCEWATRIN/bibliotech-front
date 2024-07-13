@@ -22,4 +22,26 @@ export default {
   fetchBooks(): Promise<AxiosResponse<GetAllBooksResponse>> {
     return apiBibliotoClient.get(`/books`);
   },
+
+  async saveBook(book: any, isEditMode: boolean): Promise<void> {
+    try {
+      if (isEditMode) {
+        await apiBibliotoClient.put(`/books/${book.id}`, book);
+      } else {
+        await apiBibliotoClient.post('/books', book);
+      }
+    } catch (error) {
+      console.error('Error saving book:', error);
+      throw error;  
+    }
+  },
+
+  async deleteBook(id: number): Promise<void> {
+    try {
+      await apiBibliotoClient.delete(`/books/${id}`);
+    } catch (error) {
+      console.error('Error deleting book:', error);
+      throw error; 
+    }
+  }
 };
