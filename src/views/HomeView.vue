@@ -30,13 +30,14 @@
 <script lang="ts">
 import { defineComponent, ref, computed, onMounted, watch } from 'vue';
 import axios from 'axios';
-import type { GetAllBooksResponse } from '../model/GetAllBooksResponse';
 import 'vue3-carousel/dist/carousel.css';
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel';
 import BookCard from '../components/BookCard.vue';
-import type { BookResponse } from '@/model/BookResponse';
 import 'vue3-carousel/dist/carousel.css'
 import bookService from '../service/BookService';
+import type { BookResponse } from '@/model/BookResponse';
+import type { GetAllBooksResponse } from '../model/GetAllBooksResponse';
+
 
 export default defineComponent({
   name: 'WrapAround',
@@ -62,8 +63,18 @@ export default defineComponent({
         response.value = result.data;
         const allThemes = new Set<string>();
         response.value.data.forEach(async book => {
-          const response = await bookService.getBookCover(book.id);
-          book.cover = URL.createObjectURL(response.data);
+          try {
+            const bookCoverResponse = await bookService.getBookCover(book.id);
+            if (bookCoverResponse.status === 200) {
+              console.log("La couverture du livre a été récupérée avec succès.");
+              book.cover = URL.createObjectURL(bookCoverResponse.data);
+            } else {
+              console.error(`Erreur lors de la récupération de la couverture du livre, statut : ${bookCoverResponse.status}`);
+            }
+          } catch (error) {
+            console.error("Erreur lors de l'appel de getBookCover:", error);
+          }
+
           book.themes.forEach(theme => {
             allThemes.add(theme.name);
           });
