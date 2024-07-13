@@ -116,11 +116,11 @@
     </form>
   </div>
 </template>
+
 <script lang="ts">
 import { defineComponent, ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useBookStore } from '../store/bookStore';
-import axios from 'axios';
 import type { BookResponse } from '../model/BookResponse';
 import bookService from '../service/BookService';
 import router from '@/router';
@@ -140,8 +140,8 @@ export default defineComponent({
       summary: '',
       numberOfPage: 0,
       openLibraryId: '',
-      cover: '',
       coverPageUrl: '',
+      cover: '',
       traductionLanguage: '',
       initialLanguage: '',
       firstPublishYear: 0,
@@ -157,18 +157,29 @@ export default defineComponent({
       isAnOpenLibaryApiRegister: false,
       isAnOpenLibaryApiBookValidate: false
     });
-
     const isEditMode = ref(false);
     const route = useRoute();
 
-    onMounted(() => {
+    onMounted(async () => {
       if (bookStore.book) {
         book.value = bookStore.book;
         bookStore.clearBook();
       } else if (route.params.id) {
         // Fetch book by id if not coming from WebSocket
         isEditMode.value = true;
-        bookService.getBookDetails(Number(route.params.id));
+
+        try {
+          const bookResponse = await bookService.getBookDetails(Number(route.params.id));
+          if (bookResponse.status === 200) {
+            console.log("Livre récupéré avec succès." + bookResponse.data.data);
+            book.value = bookResponse.data.data;
+          } else {
+            console.error(`Erreur lors de la récupération du livre, statut : ${bookCoverResponse.status}`);
+          }
+        } catch (error) {
+          console.error("Erreur lors de l'appel du livre:", error);
+        }
+
       }
     });
     const saveBook = async () => {
