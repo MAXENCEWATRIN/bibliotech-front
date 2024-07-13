@@ -30,13 +30,13 @@
 <script lang="ts">
 import { defineComponent, ref, computed, onMounted, watch } from 'vue';
 import axios from 'axios';
-import type { GetAllBooksResponse } from '../model/GetAllBooksResponse';
 import 'vue3-carousel/dist/carousel.css';
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel';
 import BookCard from '../components/BookCard.vue';
-import type { BookResponse } from '@/model/BookResponse';
 import 'vue3-carousel/dist/carousel.css'
 import bookService from '../service/BookService';
+import type { GetAllBooksResponse } from '../model/GetAllBooksResponse';
+
 
 export default defineComponent({
   name: 'WrapAround',
@@ -61,13 +61,24 @@ export default defineComponent({
         const result = await bookService.fetchBooks();
         response.value = result.data;
         const allThemes = new Set<string>();
-        response.value.data.forEach(async book => {
-          const response = await bookService.getBookCover(book.id);
-          book.cover = URL.createObjectURL(response.data);
+
+        await Promise.all(response.value.data.map(async book => {
+          try {
+            const bookCoverResponse = await bookService.getBookCover(book.id);
+            if (bookCoverResponse.status === 200) {
+              console.log("La couverture du livre a été récupérée avec succès.");
+              book.cover = URL.createObjectURL(bookCoverResponse.data);
+            } else {
+              console.error(`Erreur lors de la récupération de la couverture du livre, statut : ${bookCoverResponse.status}`);
+            }
+          } catch (error) {
+            console.error("Erreur lors de l'appel de getBookCover:", error);
+          }
+
           book.themes.forEach(theme => {
             allThemes.add(theme.name);
           });
-        });
+        }));
         themes.value = Array.from(allThemes);
       } catch (error) {
         console.error('There was an error!', error);
@@ -82,17 +93,6 @@ export default defineComponent({
         book.themes.some(theme => theme.name === selectedTheme.value)
       );
     });
-
-    const deleteBook = async (book: BookResponse) => {
-      try {
-        await axios.delete(`http://localhost:8080/biblioto/books/${book.id}`, {
-          data: { book },
-        });
-        fetchBooks();
-      } catch (error) {
-        console.error('There was an error!', error);
-      }
-    };
 
     const filterBooks = () => {
       // Update the key to force the carousel to re-render
@@ -110,7 +110,6 @@ export default defineComponent({
       themes,
       selectedTheme,
       filteredBooks,
-      deleteBook,
       carouselKey
     };
   },
