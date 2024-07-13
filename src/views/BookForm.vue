@@ -5,82 +5,74 @@
       <div>
         <label for="isbnId" class="block text-sm font-medium text-white-700">ISBN ID</label>
         <input type="number" v-model="book.isbnId"
-          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm custom-text-color"
+          class="block appearance-none w-full bg-black border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
           required />
       </div>
       <div>
         <label for="oldIsbnId" class="block text-sm font-medium text-white-700">Old ISBN ID</label>
         <input type="number" v-model="book.oldIsbnId"
-          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm custom-text-color" />
+          class="block appearance-none w-full bg-black border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
       </div>
       <div>
         <label for="title" class="block text-sm font-medium text-white-700">Title</label>
         <input type="text" v-model="book.title"
-          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm custom-text-color"
+          class="block appearance-none w-full bg-black border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
           required />
       </div>
       <div>
         <label for="authorName" class="block text-sm font-medium text-white-700">Author Name</label>
         <input type="text" v-model="book.authorName"
-          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm custom-text-color"
+          class="block appearance-none w-full bg-black border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
           required />
       </div>
       <div>
         <label for="titleLong" class="block text-sm font-medium text-white-700">Title Long</label>
         <input type="text" v-model="book.titleLong"
-          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm custom-text-color" />
+          class="block appearance-none w-full bg-black border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
       </div>
       <div>
         <label for="subtitle" class="block text-sm font-medium text-white-700">Subtitle</label>
         <input type="text" v-model="book.subtitle"
-          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm custom-text-color" />
+          class="block appearance-none w-full bg-black border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
       </div>
       <div>
         <label for="synopsis" class="block text-sm font-medium text-white-700">Synopsis</label>
         <textarea v-model="book.synopsis"
-          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm custom-text-color"></textarea>
+          class="block appearance-none w-full bg-black border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"></textarea>
       </div>
       <div>
         <label for="summary" class="block text-sm font-medium text-white-700">Summary</label>
         <textarea v-model="book.summary"
-          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm custom-text-color"></textarea>
-      </div>
+          class="block appearance-none w-full bg-black border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">      </div>
       <div>
         <label for="numberOfPage" class="block text-sm font-medium text-white-700">Number of Pages</label>
         <input type="number" v-model="book.numberOfPage"
-          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm custom-text-color"
-          required />
+        class="block appearance-none w-full bg-black border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"       required />
       </div>
       <div>
         <label for="openLibraryId" class="block text-sm font-medium text-white-700">Open Library ID</label>
         <input type="text" v-model="book.openLibraryId"
-          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm custom-text-color" />
-      </div>
+        class="block appearance-none w-full bg-black border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">      </div>
       <div>
         <label for="coverPageUrl" class="block text-sm font-medium text-white-700">Cover Page URL</label>
         <input type="text" v-model="book.coverPageUrl"
-          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm custom-text-color" />
-      </div>
+        class="block appearance-none w-full bg-black border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">      </div>
       <div>
         <label for="traductionLanguage" class="block text-sm font-medium text-white-700">Translation Language</label>
         <input type="text" v-model="book.traductionLanguage"
-          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm custom-text-color" />
-      </div>
+        class="block appearance-none w-full bg-black border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">      </div>
       <div>
         <label for="initialLanguage" class="block text-sm font-medium text-white-700">Initial Language</label>
         <input type="text" v-model="book.initialLanguage"
-          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm custom-text-color" />
-      </div>
+        class="block appearance-none w-full bg-black border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">      </div>
       <div>
         <label for="firstPublishYear" class="block text-sm font-medium text-white-700">First Publish Year</label>
         <input type="number" v-model="book.firstPublishYear"
-          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm custom-text-color" />
-      </div>
+        class="block appearance-none w-full bg-black border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">      </div>
       <div>
         <label for="firstSentence" class="block text-sm font-medium text-white-700">First Sentence</label>
         <input type="text" v-model="book.firstSentence"
-          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm custom-text-color" />
-      </div>
+        class="block appearance-none w-full bg-black border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">      </div>
       <div class="flex items-center">
         <input type="checkbox" v-model="book.isWishList" class="h-4 w-4 text-indigo-600 border-gray-300 rounded" />
         <label for="isWishList" class="ml-2 block text-sm font-medium text-white-700">Is Wish List</label>
@@ -88,19 +80,18 @@
       <div>
         <label for="overallReception" class="block text-sm font-medium text-white-700">Overall Reception</label>
         <textarea v-model="book.overallReception"
-          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          custom-text-color></textarea>
+        class="block appearance-none w-full bg-black border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"        custom-text-color></textarea>
       </div>
       <div>
         <label for="praises" class="block text-sm font-medium text-white-700">Praises</label>
         <textarea v-model="book.praises"
-          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          class="block appearance-none w-full bg-black border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
           custom-text-color></textarea>
       </div>
       <div>
         <label for="criticisms" class="block text-sm font-medium text-white-700">Criticisms</label>
         <textarea v-model="book.criticisms"
-          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          class="block appearance-none w-full bg-black border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
           custom-text-color></textarea>
       </div>
       <div class="flex items-center">

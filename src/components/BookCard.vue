@@ -12,8 +12,8 @@
 
 <script lang="ts">
 import { computed, defineComponent, type PropType } from 'vue';
-import { BookResponse } from '../model/BookResponse';
-import defaultCover from '../assets/404_temp.jpg';
+import type { BookResponse } from '../model/BookResponse';
+import defaultCover from '../assets/cover_page_1.jpg';
 
 export default defineComponent({
     props: {
@@ -24,7 +24,7 @@ export default defineComponent({
     },
     setup(props) {
         const bookCoverUrl = computed(() => {
-            return props.book.coverPageUrl || defaultCover;
+            return props.book.cover || defaultCover;
         });
 
         return {
@@ -40,7 +40,7 @@ export default defineComponent({
     flex-direction: column;
     align-items: center;
     text-align: center;
-    background-color: #181818;
+    background-color: #1f2937;
 }
 
 .book-cover {
@@ -51,5 +51,6 @@ export default defineComponent({
 
 .book-details {
     margin-top: 10px;
+    background-color: #1f2937;
 }
 </style>

@@ -40,6 +40,7 @@ export default defineComponent({
       numberOfPage: 0,
       openLibraryId: '',
       coverPageUrl: '',
+      cover: '',
       traductionLanguage: '',
       initialLanguage: '',
       firstPublishYear: 0,

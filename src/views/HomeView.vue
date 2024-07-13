@@ -1,22 +1,18 @@
 <template>
-  <div>
-    <h1>Books List</h1>
-    <router-link to="/book">Add New Book</router-link>
-    <ul>
-      <li v-for="book in response.data" :key="book.id">
-        <router-link :to="{ name: 'BookForm', params: { id: book.id } }">{{ book.title }}</router-link>
-        <button @click="deleteBook(book)">Delete</button>
 
-      </li>
-    </ul>
-  </div>
   <div>
-    <h1>Books Carousel</h1>
-    <select v-model="selectedTheme" @change="filterBooks">
-      <option value="">All Themes</option>
-      <option v-for="theme in themes" :key="theme">{{ theme }}</option>
-    </select>
-    <Carousel :items-to-show="2.5" :wrap-around="true">
+    <div class="relative w-full max-w-xs mx-auto mb-6">
+      <select v-model="selectedTheme" @change="filterBooks"
+        class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline text-gray-700 text-center">
+        <option value="" class="text-gray-500">All Themes</option>
+        <option v-for="theme in themes" :key="theme" class="text-gray-700">{{ theme }}</option>
+      </select>
+      <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+        <i class="fas fa-chevron-down"></i>
+      </div>
+    </div>
+    <Carousel :key="carouselKey" :items-to-show="3.95" :wrap-around="true" :transition="500"
+      class="w-full bg-gray-800 text-white py-6">
       <Slide v-for="book in filteredBooks" :key="book.id">
         <div class="carousel__item">
           <BookCard :book="book" />
@@ -25,20 +21,22 @@
       </Slide>
       <template #addons>
         <Navigation />
-        <Pagination />
       </template>
     </Carousel>
+
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, onMounted } from 'vue';
+import { defineComponent, ref, computed, onMounted, watch } from 'vue';
 import axios from 'axios';
 import type { GetAllBooksResponse } from '../model/GetAllBooksResponse';
 import 'vue3-carousel/dist/carousel.css';
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel';
 import BookCard from '../components/BookCard.vue';
 import type { BookResponse } from '@/model/BookResponse';
+import 'vue3-carousel/dist/carousel.css'
+import bookService from '../service/BookService';
 
 export default defineComponent({
   name: 'WrapAround',
@@ -56,13 +54,16 @@ export default defineComponent({
     });
     const themes = ref<string[]>([]);
     const selectedTheme = ref<string>('');
+    const carouselKey = ref<number>(0);
 
     const fetchBooks = async () => {
       try {
-        const result = await axios.get('http://localhost:8080/biblioto/books');
+        const result = await bookService.fetchBooks();
         response.value = result.data;
         const allThemes = new Set<string>();
-        response.value.data.forEach(book => {
+        response.value.data.forEach(async book => {
+          const response = await bookService.getBookCover(book.id);
+          book.cover = URL.createObjectURL(response.data);
           book.themes.forEach(theme => {
             allThemes.add(theme.name);
           });
@@ -93,6 +94,15 @@ export default defineComponent({
       }
     };
 
+    const filterBooks = () => {
+      // Update the key to force the carousel to re-render
+      carouselKey.value++;
+    };
+
+    watch(filteredBooks, () => {
+      filterBooks();
+    });
+
     onMounted(fetchBooks);
 
     return {
@@ -101,30 +111,63 @@ export default defineComponent({
       selectedTheme,
       filteredBooks,
       deleteBook,
+      carouselKey
     };
   },
 });
 </script>
 <style>
-.carousel__item {
-  min-height: 200px;
-  width: 100%;
-  background-color: var(--vc-clr-primary);
-  color: var(--vc-clr-white);
-  font-size: 20px;
-  border-radius: 8px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.carousel__slide {
+  padding: 5px;
+}
+
+.carousel__viewport {
+  perspective: 2000px;
+  background-color: #1f2937;
+}
+
+.carousel__track {
+  transform-style: preserve-3d;
+}
+
+.carousel__slide--sliding {
+  transition: 0.5s;
+}
+
+.carousel__next {
+  background-color: aliceblue;
+}
+
+.carousel__prev {
+  background-color: aliceblue;
 }
 
 .carousel__slide {
-  padding: 10px;
+  opacity: 0.9;
+  transform: rotateY(-20deg) scale(0.9);
 }
 
-.carousel__prev,
-.carousel__next {
-  box-sizing: content-box;
-  border: 5px solid white;
+.carousel__slide--active~.carousel__slide {
+  transform: rotateY(20deg) scale(0.9);
+}
+
+.carousel__slide--prev {
+  opacity: 1;
+  transform: rotateY(-10deg) scale(0.95);
+}
+
+.carousel__slide--next {
+  opacity: 1;
+  transform: rotateY(10deg) scale(0.95);
+}
+
+.carousel__slide--active {
+  opacity: 1;
+  transform: rotateY(0) scale(1.1);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
 }
 </style>
