@@ -2,7 +2,9 @@ import { createRouter, createWebHistory } from 'vue-router';
 import type { RouteRecordRaw } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import BookForm from '../views/BookForm.vue';
-import LibraryList from '../views/LibraryList.vue';
+import LibraryForm from '../views/LibraryForm.vue';
+import EditorForm from '../views/EditorForm.vue';
+import OwnerForm from '../views/OwnerForm.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -16,10 +18,20 @@ const routes: Array<RouteRecordRaw> = [
     component: BookForm
   },
   {
-    path: '/library',
-    name: 'LibraryList',
-    component: LibraryList,
-},
+    path: '/library/:id?',
+    name: 'LibraryForm',
+    component: LibraryForm
+  },
+  {
+    path: '/owner/:id?',
+    name: 'OwnerForm',
+    component: OwnerForm
+  },
+  {
+    path: '/editor/:id?',
+    name: 'EditorForm',
+    component: EditorForm
+  },
 ];
 
 const router = createRouter({

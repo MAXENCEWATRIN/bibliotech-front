@@ -62,11 +62,9 @@ export default defineComponent({
     const router = useRouter();
 
     onMounted(() => {
-      console.log('TEST : ' + bookStore.book)
       if (bookStore.book) {
         book.value = bookStore.book;
-        console.log(book.value)
-        bookStore.clearBook(); // Reset the store value
+        bookStore.clearBook();
       } else if (route.params.id) {
         // Fetch book by id if not coming from WebSocket
         isEditMode.value = true;
@@ -78,7 +76,6 @@ export default defineComponent({
       try {
         const response = await axios.get(`http://localhost:8080/biblioto/books/${id}`);
         book.value = response.data;
-        console.log('FETCH : ' + book.value)
       } catch (error) {
         console.error('Error fetching book:', error);
       }

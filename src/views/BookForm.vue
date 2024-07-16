@@ -1,49 +1,61 @@
 <template>
-  <div class="p-4">
-    <h1 class="text-2xl font-bold mb-4">{{ isEditMode ? 'Edit Book' : 'Add New Book' }}</h1>
-    <form @submit.prevent="saveBook" class="space-y-4">
+  <div class="grid grid-cols-2 gap-4 flex-nowrap">
+    <div class="grid grid-cols-1 gap-4">
+      <h1 class="text-2xl font-bold mb-4" style="text-align: center;">
+        {{ isEditMode ? 'Book cover' : 'Choose a book cover' }}</h1>
+      <ImageUploader :editImage="book.cover" />
       <div>
-        <label for="isbnId" class="block text-sm font-medium text-white-700">ISBN ID</label>
-        <input type="number" v-model="book.isbnId"
-          class="block appearance-none w-full bg-black border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-          required />
+        <h1 class="text-2xl font-bold mb-4" style="text-align: center;">
+          {{ isEditMode ? 'Complementary information' : 'Choose complementary information' }}</h1>
+
       </div>
-      <div>
-        <label for="oldIsbnId" class="block text-sm font-medium text-white-700">Old ISBN ID</label>
-        <input type="number" v-model="book.oldIsbnId"
-          class="block appearance-none w-full bg-black border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-      </div>
-      <div>
-        <label for="title" class="block text-sm font-medium text-white-700">Title</label>
-        <input type="text" v-model="book.title"
-          class="block appearance-none w-full bg-black border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-          required />
-      </div>
-      <div>
-        <label for="authorName" class="block text-sm font-medium text-white-700">Author Name</label>
-        <input type="text" v-model="book.authorName"
-          class="block appearance-none w-full bg-black border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-          required />
-      </div>
-      <div>
-        <label for="titleLong" class="block text-sm font-medium text-white-700">Title Long</label>
-        <input type="text" v-model="book.titleLong"
-          class="block appearance-none w-full bg-black border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-      </div>
-      <div>
-        <label for="subtitle" class="block text-sm font-medium text-white-700">Subtitle</label>
-        <input type="text" v-model="book.subtitle"
-          class="block appearance-none w-full bg-black border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-      </div>
-      <div>
-        <label for="synopsis" class="block text-sm font-medium text-white-700">Synopsis</label>
-        <textarea v-model="book.synopsis"
-          class="block appearance-none w-full bg-black border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"></textarea>
-      </div>
-      <div>
-        <label for="summary" class="block text-sm font-medium text-white-700">Summary</label>
-        <textarea v-model="book.summary"
-          class="block appearance-none w-full bg-black border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">      </div>
+    </div>
+    <div>
+      <h1 class="text-2xl font-bold mb-4" style="text-align: center;">{{ isEditMode ? 'Edit Book' : 'Add New Book' }}
+      </h1>
+      <form @submit.prevent="saveBook" class="space-y-4">
+        <div>
+          <label for="isbnId" class="block text-sm font-medium text-white-700">ISBN ID</label>
+          <input type="number" v-model="book.isbnId"
+            class="block appearance-none w-full bg-black border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+            required />
+        </div>
+        <div>
+          <label for="oldIsbnId" class="block text-sm font-medium text-white-700">Old ISBN ID</label>
+          <input type="number" v-model="book.oldIsbnId"
+            class="block appearance-none w-full bg-black border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+        <div>
+          <label for="title" class="block text-sm font-medium text-white-700">Title</label>
+          <input type="text" v-model="book.title"
+            class="block appearance-none w-full bg-black border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+            required />
+        </div>
+        <div>
+          <label for="authorName" class="block text-sm font-medium text-white-700">Author Name</label>
+          <input type="text" v-model="book.authorName"
+            class="block appearance-none w-full bg-black border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+            required />
+        </div>
+        <div>
+          <label for="titleLong" class="block text-sm font-medium text-white-700">Title Long</label>
+          <input type="text" v-model="book.titleLong"
+            class="block appearance-none w-full bg-black border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+        <div>
+          <label for="subtitle" class="block text-sm font-medium text-white-700">Subtitle</label>
+          <input type="text" v-model="book.subtitle"
+            class="block appearance-none w-full bg-black border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+        <div>
+          <label for="synopsis" class="block text-sm font-medium text-white-700">Synopsis</label>
+          <textarea v-model="book.synopsis"
+            class="block appearance-none w-full bg-black border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"></textarea>
+        </div>
+        <div>
+          <label for="summary" class="block text-sm font-medium text-white-700">Summary</label>
+          <textarea v-model="book.summary"
+            class="block appearance-none w-full bg-black border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">      </div>
       <div>
         <label for="numberOfPage" class="block text-sm font-medium text-white-700">Number of Pages</label>
         <input type="number" v-model="book.numberOfPage"
@@ -81,40 +93,43 @@
         <label for="overallReception" class="block text-sm font-medium text-white-700">Overall Reception</label>
         <textarea v-model="book.overallReception"
         class="block appearance-none w-full bg-black border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"        custom-text-color></textarea>
-      </div>
-      <div>
-        <label for="praises" class="block text-sm font-medium text-white-700">Praises</label>
-        <textarea v-model="book.praises"
-          class="block appearance-none w-full bg-black border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-          custom-text-color></textarea>
-      </div>
-      <div>
-        <label for="criticisms" class="block text-sm font-medium text-white-700">Criticisms</label>
-        <textarea v-model="book.criticisms"
-          class="block appearance-none w-full bg-black border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-          custom-text-color></textarea>
-      </div>
-      <div class="flex items-center">
-        <input type="checkbox" v-model="book.isAnOpenLibaryApiRegister"
-          class="h-4 w-4 text-indigo-600 border-gray-300 rounded" />
-        <label for="isAnOpenLibaryApiRegister" class="ml-2 block text-sm font-medium text-white-700">Is
-          an Open Library
-          API Register</label>
-      </div>
-      <div class="flex items-center">
-        <input type="checkbox" v-model="book.isAnOpenLibaryApiBookValidate"
-          class="h-4 w-4 text-indigo-600 border-gray-300 rounded" />
-        <label for="isAnOpenLibaryApiBookValidate" class="ml-2 block text-sm font-medium text-white-700">Is an Open
-          Library API Book Validate</label>
-      </div>
-      <button v-if="isEditMode" @click="deleteBook(book.id)" type="button"
-        class="mt-4 px-4 py-2 bg-red-600 text-white rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">Delete</button>
+        </div>
+        <div>
+          <label for="praises" class="block text-sm font-medium text-white-700">Praises</label>
+          <textarea v-model="book.praises"
+            class="block appearance-none w-full bg-black border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+            custom-text-color></textarea>
+        </div>
+        <div>
+          <label for="criticisms" class="block text-sm font-medium text-white-700">Criticisms</label>
+          <textarea v-model="book.criticisms"
+            class="block appearance-none w-full bg-black border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+            custom-text-color></textarea>
+        </div>
+        <div class="flex items-center">
+          <input type="checkbox" v-model="book.isAnOpenLibaryApiRegister"
+            class="h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+          <label for="isAnOpenLibaryApiRegister" class="ml-2 block text-sm font-medium text-white-700">Is
+            an Open Library
+            API Register</label>
+        </div>
+        <div class="flex items-center">
+          <input type="checkbox" v-model="book.isAnOpenLibaryApiBookValidate"
+            class="h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+          <label for="isAnOpenLibaryApiBookValidate" class="ml-2 block text-sm font-medium text-white-700">Is an Open
+            Library API Book Validate</label>
+        </div>
+        <button v-if="isEditMode" @click="deleteBook(book.id)" type="button"
+          class="mt-4 px-4 py-2 bg-red-600 text-white rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">Delete</button>
 
-      <button type="submit"
-        class="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-        {{ isEditMode ? 'Update' : 'Create' }}</button>
-    </form>
+        <button type="submit"
+          class="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+          {{ isEditMode ? 'Update' : 'Create' }}</button>
+      </form>
+    </div>
   </div>
+
+
 </template>
 
 <script lang="ts">
@@ -123,9 +138,14 @@ import { useRoute } from 'vue-router';
 import { useBookStore } from '../store/bookStore';
 import type { BookResponse } from '../model/BookResponse';
 import bookService from '../service/BookService';
+import ImageUploader from '../components/ImageUploader.vue';
 import router from '@/router';
 
 export default defineComponent({
+  name: 'BookForm.vue',
+  components: {
+    ImageUploader,
+  },
   setup() {
     const bookStore = useBookStore();
     const book = ref<BookResponse>(bookStore.book || {
@@ -173,6 +193,13 @@ export default defineComponent({
           if (bookResponse.status === 200) {
             console.log("Livre récupéré avec succès." + bookResponse.data.data);
             book.value = bookResponse.data.data;
+            const bookCoverResponse = await bookService.getBookCover(Number(route.params.id));
+            if (bookCoverResponse.status === 200) {
+              console.log("La couverture du livre a été récupérée avec succès.");
+              book.value.cover = URL.createObjectURL(bookCoverResponse.data);
+            } else {
+              console.error(`Erreur lors de la récupération de la couverture du livre, statut : ${bookCoverResponse.status}`);
+            }
           } else {
             console.error(`Erreur lors de la récupération du livre, statut : ${bookCoverResponse.status}`);
           }
@@ -203,7 +230,7 @@ export default defineComponent({
       book,
       isEditMode,
       saveBook,
-      deleteBook
+      deleteBook,
     };
   },
 });

@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1>Library</h1>
-        <!-- Implémentez ici le CRUD pour la bibliothèque -->
+        <!-- Implémentez ici le CRUD pour la library -->
     </div>
 </template>
 

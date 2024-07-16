@@ -12,8 +12,8 @@
       </div>
     </div>
     <Carousel :key="carouselKey" :items-to-show="3.95" :wrap-around="true" :transition="500"
-      class="w-full bg-gray-800 text-white py-6">
-      <Slide v-for="book in filteredBooks" :key="book.id">
+      class="w-full bg-gray-800 text-white py-6" style="margin-top: 5%;">
+      <Slide v-for="book in filteredBooks" :key="book">
         <div class="carousel__item">
           <BookCard :book="book" />
         </div>
@@ -29,14 +29,13 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, onMounted, watch } from 'vue';
-import axios from 'axios';
 import 'vue3-carousel/dist/carousel.css';
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel';
 import BookCard from '../components/BookCard.vue';
 import 'vue3-carousel/dist/carousel.css'
 import bookService from '../service/BookService';
 import type { GetAllBooksResponse } from '../model/GetAllBooksResponse';
-
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
   name: 'WrapAround',
@@ -55,10 +54,20 @@ export default defineComponent({
     const themes = ref<string[]>([]);
     const selectedTheme = ref<string>('');
     const carouselKey = ref<number>(0);
+    const router = useRouter();
 
     const fetchBooks = async () => {
       try {
         const result = await bookService.fetchBooks();
+        response.value = result.data;
+
+        // Rediriger vers /book si la liste est vide
+        if (response.value.data.length === 0) {
+          router.push('/book');
+          return;
+        }
+
+
         response.value = result.data;
         const allThemes = new Set<string>();
 

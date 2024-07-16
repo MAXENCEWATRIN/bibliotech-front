@@ -16,7 +16,7 @@ import type { OwnerResponse } from './OwnerResponse';
     numberOfPage: number;
     openLibraryId: string;
     coverPageUrl: string;
-    cover: string;
+    cover: Blob;
     traductionLanguage: string;
     initialLanguage: string;
     firstPublishYear: number;

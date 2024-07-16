@@ -45,12 +45,14 @@ export default defineComponent({
 
 .book-cover {
     max-width: 100%;
+    margin-top: 10%;
     height: auto;
     border-radius: 10px;
 }
 
 .book-details {
     margin-top: 10px;
+    margin-bottom: 10%;
     background-color: #1f2937;
 }
 </style>

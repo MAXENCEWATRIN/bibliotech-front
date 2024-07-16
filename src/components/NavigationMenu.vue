@@ -7,11 +7,18 @@
                         <router-link to="/" class="hover:text-gray-400">Home</router-link>
                     </li>
                     <li>
-                        <router-link to="/books" class="hover:text-gray-400">Books</router-link>
+                        <router-link to="/book" class="hover:text-gray-400">Book</router-link>
                     </li>
                     <li>
-                        <router-link to="/libraries" class="hover:text-gray-400">Libraries</router-link>
+                        <router-link to="/library" class="hover:text-gray-400">Library</router-link>
                     </li>
+                    <li>
+                        <router-link to="/owner" class="hover:text-gray-400">Owner</router-link>
+                    </li>
+                    <li>
+                        <router-link to="/editor" class="hover:text-gray-400">Editor</router-link>
+                    </li>
+
                 </ul>
             </nav>
         </div>
