@@ -74,7 +74,7 @@ export default defineComponent({
 
     const fetchBook = async (id: number) => {
       try {
-        const response = await axios.get(`http://localhost:8080/biblioto/books/${id}`);
+        const response = await axios.get(`http://localhost:8080/bibliotech/books/${id}`);
         book.value = response.data;
       } catch (error) {
         console.error('Error fetching book:', error);
@@ -84,9 +84,9 @@ export default defineComponent({
     const saveBook = async () => {
       try {
         if (isEditMode.value) {
-          await axios.put(`http://localhost:8080/biblioto/books/${book.value.id}`, book.value);
+          await axios.put(`http://localhost:8080/bibliotech/books/${book.value.id}`, book.value);
         } else {
-          await axios.post('http://localhost:8080/biblioto/books', book.value);
+          await axios.post('http://localhost:8080/bibliotech/books', book.value);
         }
         router.push('/');
       } catch (error) {

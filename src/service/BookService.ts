@@ -1,11 +1,11 @@
-import apiBibliotoClient from '@/service/BibliotoApi';
+import apiBibliotechClient from '@/service/BibliotechApi';
 import type { AxiosResponse } from 'axios';
 import type { GetOneBookResponse } from '@/model/GetOneBookResponse';
 import type { GetAllBooksResponse } from '@/model/GetAllBooksResponse';
 
 export default {
   getBookCover(bookId: number): Promise<AxiosResponse<Blob>> {
-    return apiBibliotoClient.get(`/books/${bookId}/cover`, {
+    return apiBibliotechClient.get(`/books/${bookId}/cover`, {
       responseType: 'blob' 
     }).catch(function (error) {
       if (error.response && error.response.status === 404) {
@@ -17,18 +17,18 @@ export default {
     });
   },
   getBookDetails(bookId: number): Promise<AxiosResponse<GetOneBookResponse>> {
-    return apiBibliotoClient.get(`/books/${bookId}`);
+    return apiBibliotechClient.get(`/books/${bookId}`);
   },
   fetchBooks(): Promise<AxiosResponse<GetAllBooksResponse>> {
-    return apiBibliotoClient.get(`/books`);
+    return apiBibliotechClient.get(`/books`);
   },
 
   async saveBook(book: any, isEditMode: boolean): Promise<void> {
     try {
       if (isEditMode) {
-        await apiBibliotoClient.put(`/books/${book.id}`, book);
+        await apiBibliotechClient.put(`/books/${book.id}`, book);
       } else {
-        await apiBibliotoClient.post('/books', book);
+        await apiBibliotechClient.post('/books', book);
       }
     } catch (error) {
       console.error('Error saving book:', error);
@@ -38,7 +38,7 @@ export default {
 
   async deleteBook(id: number): Promise<void> {
     try {
-      await apiBibliotoClient.delete(`/books/${id}`);
+      await apiBibliotechClient.delete(`/books/${id}`);
     } catch (error) {
       console.error('Error deleting book:', error);
       throw error; 
