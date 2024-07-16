@@ -4,7 +4,7 @@ import { useBookStore } from '../store/bookStore';
 import type { GetOneBookResponse } from '../model/GetOneBookResponse';
 import router from '@/router';
 
-const URL = 'http://localhost:8080/biblioto/ws';
+const URL = 'http://localhost:8080/bibliotech/ws';
 let stompClient: Stomp.Client | null = null;
 
 export function connectWebSocket() {
