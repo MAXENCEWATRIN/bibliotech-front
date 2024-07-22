@@ -1,3 +1,6 @@
 export interface EditorResponse {
-    // Définir les champs de EditorResponse ici
+  id: number;
+  name: string;
+  category: string;
+  edition: string;
   }

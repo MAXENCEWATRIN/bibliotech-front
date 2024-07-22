@@ -1,6 +1,6 @@
 import type { EditorResponse } from './EditorResponse';
 import type { LibraryResponse } from './LibraryResponse';
-import type { ThemeResponse } from './ThemeResponse';
+import type { ThemeResponse } from './theme/ThemeResponse';
 import type { OwnerResponse } from './OwnerResponse';
   
   export interface BookResponse {

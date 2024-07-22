@@ -1,15 +1,15 @@
 <template>
-    <div class="max-w-lg mx-auto p-4">
-        <div v-if="!editImage" @drop.prevent="handleDrop" @dragover.prevent @dragenter.prevent
-            class="flex items-center justify-center border-2 border-dashed border-gray-400 rounded-lg p-6 cursor-pointer"
+    <div class="mr-10pl max-w-lg mx-auto p-4 grid grid-cols-2 gap-4">
+        <div @drop.prevent="handleDrop" @dragover.prevent @dragenter.prevent
+            class="flex items-center justify-center border-2 border-dashed text-white border-gray-400 rounded-lg p-6 cursor-pointer"
             @click="selectFile">
             <input type="file" ref="fileInput" class="hidden" @change="handleFileChange" accept=".jpg" />
             <p>Drag & Drop your JPG file here or click to browse</p>
         </div>
-        <div v-if="editImage" class="mt-4">
+        <div  v-if="editImage" class="mt-4 grid grid-cols-2 gap-4">
             <img :src="editImage" class="max-w-xs max-h-xs object-contain rounded-lg" />
         </div>
-        <div v-if="previewUrl" class="mt-4">
+        <div v-if="previewUrl" class="mt-4 grid grid-cols-2 gap-4">
             <img :src="previewUrl" alt="Preview" class="max-w-xs max-h-xs object-contain rounded-lg" />
         </div>
     </div>

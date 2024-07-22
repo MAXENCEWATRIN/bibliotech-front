@@ -3,13 +3,10 @@
   <div>
     <div class="relative w-full max-w-xs mx-auto mb-6">
       <select v-model="selectedTheme" @change="filterBooks"
-        class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline text-gray-700 text-center">
-        <option value="" class="text-gray-500">All Themes</option>
-        <option v-for="theme in themes" :key="theme" class="text-gray-700">{{ theme }}</option>
+        class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+        <option value="" class="sr-only">All Themes</option>
+        <option v-for="theme in themes" :key="theme" class="sr-only">{{ theme }}</option>
       </select>
-      <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-        <i class="fas fa-chevron-down"></i>
-      </div>
     </div>
     <Carousel :key="carouselKey" :items-to-show="3.95" :wrap-around="true" :transition="500"
       class="w-full bg-gray-800 text-white py-6" style="margin-top: 5%;">
@@ -30,11 +27,12 @@
 <script lang="ts">
 import { defineComponent, ref, computed, onMounted, watch } from 'vue';
 import 'vue3-carousel/dist/carousel.css';
-import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel';
+import { Carousel, Slide, Navigation } from 'vue3-carousel';
 import BookCard from '../components/BookCard.vue';
 import 'vue3-carousel/dist/carousel.css'
 import bookService from '../service/BookService';
 import type { GetAllBooksResponse } from '../model/GetAllBooksResponse';
+
 import { useRouter } from 'vue-router';
 
 export default defineComponent({
@@ -43,7 +41,6 @@ export default defineComponent({
     Carousel,
     Slide,
     BookCard,
-    Pagination,
     Navigation,
   },
   setup() {
@@ -143,11 +140,13 @@ export default defineComponent({
 }
 
 .carousel__next {
-  background-color: aliceblue;
+  background-color: #1f2937;
+  border-radius: 50%;
 }
 
 .carousel__prev {
-  background-color: aliceblue;
+  border-radius: 50%;
+  background-color: #1f2937;
 }
 
 .carousel__slide {
