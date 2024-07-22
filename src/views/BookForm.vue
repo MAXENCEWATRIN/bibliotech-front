@@ -6,7 +6,7 @@
       <ImageUploader :editImage="book.cover" />
       <button @click="openModalGoogleSearch" type="button"
         class="mt-4 px-4 py-2  background-custom-color-button text-white rounded-md shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">Search
-        for cover image</button>
+        for cover picture</button>
       <div class="items-center space-y-4">
         <h1 class="text-2xl font-bold mb-4 text-center text-white">
           {{ isEditMode ? 'Complementary information' : 'Choose complementary information' }}</h1>
@@ -218,9 +218,6 @@
           </label>
         </div>
 
-
-
-
         <button v-if="isEditMode" @click="deleteBook(book.id)" type="button"
           class="mt-4 px-4 py-2 bg-red-600 text-white rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">Delete</button>
 
@@ -381,7 +378,6 @@ export default defineComponent({
     const route = useRoute();
 
     const handleImageSelected = (link: string) => {
-      console.log(link);
       book.value.coverPageUrl = link;
     };
 
