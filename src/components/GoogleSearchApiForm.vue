@@ -17,8 +17,7 @@
                   class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">Close</button>
                   <div v-if="results.length">
                     <div v-for="result in results" :key="result.link" class="mt-4 background-custom-color-form">
-                      <img :src="result.link" class="w-full"/>
-                      <button @click="selectImage(result.link)" class="mt-2 bg-green-500 text-white py-2 px-4 rounded">Select</button>
+                      <img @click="selectImage(result.link)" :src="result.link" class="w-full"/>
                     </div>
                   </div>
                   <div v-else-if="loading" class="mt-4 background-custom-color-form">Loading...</div>

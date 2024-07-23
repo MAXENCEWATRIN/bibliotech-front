@@ -11,12 +11,12 @@ export default {
     return apiBibliotechClient.get(`/libraries`);
   },
 
-  async saveLibrary(library: any, isEditMode: boolean): Promise<void> {
+  saveLibrary(library: any, isEditMode: boolean): Promise<AxiosResponse<GetOneLibraryResponse>> {
     try {
       if (isEditMode) {
-        await apiBibliotechClient.put(`/libraries/${library.id}`, library);
+      return  apiBibliotechClient.put(`/libraries/${library.id}`, library);
       } else {
-        await apiBibliotechClient.post('/libraries', library);
+       return apiBibliotechClient.post('/libraries', library);
       }
     } catch (error) {
       console.error('Error saving library:', error);

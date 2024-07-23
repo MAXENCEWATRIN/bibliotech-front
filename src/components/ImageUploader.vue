@@ -6,7 +6,7 @@
             <input type="file" ref="fileInput" class="hidden" @change="handleFileChange" accept=".jpg" />
             <p>Drag & Drop your JPG file here or click to browse</p>
         </div>
-        <div  v-if="editImage" class="mt-4 grid grid-cols-2 gap-4">
+        <div  v-if="editImage && !previewUrl" class="mt-4 grid grid-cols-2 gap-4">
             <img :src="editImage" class="max-w-xs max-h-xs object-contain rounded-lg" />
         </div>
         <div v-if="previewUrl" class="mt-4 grid grid-cols-2 gap-4">
@@ -49,6 +49,7 @@ export default defineComponent({
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     previewUrl.value = e.target?.result as string;
+                    
                 };
                 reader.readAsDataURL(file);
             } else {

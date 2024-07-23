@@ -11,12 +11,12 @@ export default {
     return apiBibliotechClient.get(`/editors`);
   },
 
-  async saveEditor(editor: any, isEditMode: boolean): Promise<void> {
+  saveEditor(editor: any, isEditMode: boolean): Promise<AxiosResponse<GetOneEditorResponse>> {
     try {
       if (isEditMode) {
-        await apiBibliotechClient.put(`/editors/${editor.id}`, editor);
+        return apiBibliotechClient.put(`/editors/${editor.id}`, editor);
       } else {
-        await apiBibliotechClient.post('/editors', editor);
+        return apiBibliotechClient.post('/editors', editor);
       }
     } catch (error) {
       console.error('Error saving editor:', error);

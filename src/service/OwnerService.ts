@@ -1,22 +1,22 @@
 import apiBibliotechClient from '@/service/BibliotechApi';
 import type { AxiosResponse } from 'axios';
-import type { GetOneOwnerRequest } from '@/model/GetOneOwnerRequest';
+import type { GetOneOwnerResponse } from '@/model/GetOneOwnerResponse';
 import type { GetAllOwnersResponse } from '@/model/GetAllOwnersResponse';
 
 export default {
-  getOwnerDetails(bookId: number): Promise<AxiosResponse<GetOneOwnerRequest>> {
+  getOwnerDetails(bookId: number): Promise<AxiosResponse<GetOneOwnerResponse>> {
     return apiBibliotechClient.get(`/owners/${bookId}`);
   },
   fetchOwners(): Promise<AxiosResponse<GetAllOwnersResponse>> {
     return apiBibliotechClient.get(`/owners`);
   },
 
-  async saveOwner(theme: any, isEditMode: boolean): Promise<void> {
+  saveOwner(theme: any, isEditMode: boolean): Promise<AxiosResponse<GetOneOwnerResponse>> {
     try {
       if (isEditMode) {
-        await apiBibliotechClient.put(`/owners/${theme.id}`, theme);
+      return  apiBibliotechClient.put(`/owners/${theme.id}`, theme);
       } else {
-        await apiBibliotechClient.post('/owners', theme);
+        return  apiBibliotechClient.post('/owners', theme);
       }
     } catch (error) {
       console.error('Error saving owner:', error);

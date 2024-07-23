@@ -4,6 +4,7 @@
       <h1 class="text-2xl font-bold mb-4 text-center text-white">
         {{ isEditMode ? 'Book cover' : 'Choose a book cover' }}</h1>
       <ImageUploader :editImage="book.cover" />
+      <!-- TODO : CREER UN BOUTON DE suppression de l'image google-->
       <button @click="openModalGoogleSearch" type="button"
         class="mt-4 px-4 py-2  background-custom-color-button text-white rounded-md shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">Search
         for cover picture</button>
@@ -26,8 +27,6 @@
               @submit="handleFormSubmitAddLibrary" />
           </div>
         </div>
-
-
 
         <div class="flex items-center space-x-4">
 
@@ -67,7 +66,7 @@
           <label for="editors" class="block mb-2 text-sm font-medium text-white dark:text-white">Editor :</label>
           <select v-model="selectedEditor"
             class="background-custom-color-form border border-gray-300 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/3 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-            <option v-for="editor in editorsResponse.data" :key="editor.id"> {{ editor.name }}, edition :
+            <option v-for="editor in editorsResponse.data" :key="editor.id" :value="editor.id"> {{ editor.name }}, edition :
               {{ editor.edition }}</option>
           </select>
           <div>
@@ -379,33 +378,32 @@ export default defineComponent({
 
     const handleImageSelected = (link: string) => {
       book.value.coverPageUrl = link;
+      book.value.cover = link;
     };
 
     const handleFormSubmitAddLibrary = async (library: LibraryResponse) => {
       try {
-        await libraryService.saveLibrary(library, false)
-        const libraryRefetchResponse = await libraryService.fetchLibraries();
-        if (libraryRefetchResponse.status === 200) {
+        const libraryResponse = await libraryService.saveLibrary(library, false);
+        if (libraryResponse.status === 200) {
+          librariesResponse.value.data.push(libraryResponse.data.data);
           console.log("La bibliothèque à été ajoutée avec succès et la liste mise à jour.");
-          librariesResponse.value = libraryRefetchResponse.data;
         } else {
-          console.error(`Erreur lors de la récupération des bibliothèques du livre, statut : ${libraryRefetchResponse.status}`);
+          console.error(`Erreur lors de la récupération de l'ajout d'une bibliothèque, statut : ${libraryResponse.status}`);
         }
         closeModalLibrary();
       } catch (error) {
-        console.error('Error adding editor:', error);
+        console.error('Error adding library :', error);
       }
     };
 
     const handleFormSubmitAddEditor = async (editor: EditorResponse) => {
       try {
-        await editorService.saveEditor(editor, false)
-        const editorRefetchResponse = await editorService.fetchEditors();
-        if (editorRefetchResponse.status === 200) {
+      const editorResponse =  await editorService.saveEditor(editor, false)
+        if (editorResponse.status === 200) {
+          editorsResponse.value.data.push(editorResponse.data.data);
           console.log("L'éditeur à été ajouté avec succès et la liste mise à jour.");
-          editorsResponse.value = editorRefetchResponse.data;
         } else {
-          console.error(`Erreur lors de la récupération des editeurs du livre, statut : ${editorRefetchResponse.status}`);
+          console.error(`Erreur lors de la récupération des editeurs du livre, statut : ${editorResponse.status}`);
         }
         closeModalEditor();
       } catch (error) {
@@ -415,13 +413,12 @@ export default defineComponent({
 
     const handleFormSubmitAddOwner = async (editor: OwnerResponse) => {
       try {
-        await ownerService.saveOwner(editor, false)
-        const ownersRefetchResponse = await ownerService.fetchOwners();
-        if (ownersRefetchResponse.status === 200) {
+        const ownerResponse = await ownerService.saveOwner(editor, false);
+        if (ownerResponse.status === 200) {
+          ownersResponse.value.data.push(ownerResponse.data.data);
           console.log("Le propriétaire à été ajouté avec succès et la liste mise à jour.");
-          ownersResponse.value = ownersRefetchResponse.data;
         } else {
-          console.error(`Erreur lors de la récupération des propriétaires du livre, statut : ${ownersRefetchResponse.status}`);
+          console.error(`Erreur lors de la récupération des propriétaires du livre, statut : ${ownerResponse.status}`);
         }
         closeModalOwner();
       } catch (error) {
@@ -431,13 +428,12 @@ export default defineComponent({
 
     const handleFormSubmitAddTheme = async (theme: ThemeResponse) => {
       try {
-        await themeService.saveTheme(theme, false)
-        const themesRefetchResponse = await themeService.fetchThemes();
-        if (themesRefetchResponse.status === 200) {
+        const themeResponse = await themeService.saveTheme(theme, false)
+        if (themeResponse.status === 200) {
+          themesResponse.value.data.push(themeResponse.data.data);
           console.log("Le theme à été ajouté avec succès et la liste mise à jour.");
-          themesResponse.value = themesRefetchResponse.data;
         } else {
-          console.error(`Erreur lors de la récupération des thèmes, statut : ${themesRefetchResponse.status}`);
+          console.error(`Erreur lors de la récupération des thèmes, statut : ${themeResponse.status}`);
         }
         closeModalTheme();
       } catch (error) {
@@ -450,7 +446,7 @@ export default defineComponent({
       if (bookStore.book) {
         book.value = bookStore.book;
         bookStore.clearBook();
-        promptGoogleSearch.value = book.value.title + ', ' + book.value.authorName + ', ' + ( book.value.editor ? 'editeur : '+ book.value.editor.name + ', edition :' + book.value.editor.edition + ', ' + book.value.firstPublishYear : '');
+        promptGoogleSearch.value = book.value.title + ', ' + book.value.authorName + ', ' + (book.value.editor ? 'editeur : ' + book.value.editor.name + ', edition :' + book.value.editor.edition + ', ' + book.value.firstPublishYear : '');
       } else if (route.params.id) {
         // Fetch book by id if not coming from WebSocket
         isEditMode.value = true;
@@ -473,7 +469,7 @@ export default defineComponent({
                 console.error(`Erreur lors de la récupération de la couverture du livre, statut : ${bookCoverResponse.status}`);
               }
             } catch (error) {
-              promptGoogleSearch.value = book.value.title + ', ' + book.value.authorName + ', ' + ( book.value.editor ? 'editeur : '+ book.value.editor.name + ', edition : ' + book.value.editor.edition + ', ' + book.value.firstPublishYear : '');
+              promptGoogleSearch.value = book.value.title + ', ' + book.value.authorName + ', ' + (book.value.editor ? 'editeur : ' + book.value.editor.name + ', edition : ' + book.value.editor.edition + ', ' + book.value.firstPublishYear : '');
               console.error("Erreur lors de la recherche de la couverture:", error);
             }
 
@@ -530,10 +526,12 @@ export default defineComponent({
           book.value.owner = ownersResponse.value.data.find(owner => owner.id === selectedOwner.value) || {};
         }
         if (selectedEditor.value) {
-          book.value.editor = editorsResponse.value.data.find(editor => editor.id === selectedEditor.value) || {};
+          console.log('valeur de lediteur' + selectedEditor.value)
+          book.value.editor.id = selectedEditor.value;
+          console.log('valeur de lediteur APRES' + book.value.editor)
         }
         if (selectedLibrary.value) {
-          book.value.library = librariesResponse.value.data.find(library => library.id === selectedLibrary.value) || {};
+          book.value.library.id = selectedLibrary.value;
         }
         await bookService.saveBook(book.value, isEditMode.value);
         router.push('/');

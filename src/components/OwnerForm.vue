@@ -5,12 +5,12 @@
             <form @submit.prevent="handleSubmit">
                 <div class="mb-4">
                     <label for="firstname" class="block text-sm font-medium text-white">FirstName</label>
-                    <input type="text" v-model="owner.firstname" id="firstname"
+                    <input type="text" v-model="owner.firstName" id="firstname"
                         class="background-custom-input-form mt-1 block w-full border-gray-300 rounded-md shadow-sm">
                 </div>
                 <div class="mb-4">
                     <label for="lastname" class="block text-sm font-medium text-white">Lastname</label>
-                    <input type="text" v-model="owner.lastname" id="lastname"
+                    <input type="text" v-model="owner.lastName" id="lastname"
                         class="background-custom-input-form mt-1 block w-full border-gray-300 rounded-md shadow-sm">
                 </div>
                 <div class="flex justify-end">

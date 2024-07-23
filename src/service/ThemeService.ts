@@ -11,12 +11,12 @@ export default {
     return apiBibliotechClient.get(`/themes`);
   },
 
-  async saveTheme(theme: any, isEditMode: boolean): Promise<void> {
+  saveTheme(theme: any, isEditMode: boolean): Promise<AxiosResponse<GetOneThemeResponse>> {
     try {
       if (isEditMode) {
-        await apiBibliotechClient.put(`/themes/${theme.id}`, theme);
+        return apiBibliotechClient.put(`/themes/${theme.id}`, theme);
       } else {
-        await apiBibliotechClient.post('/themes', theme);
+        return apiBibliotechClient.post('/themes', theme);
       }
     } catch (error) {
       console.error('Error saving theme:', error);

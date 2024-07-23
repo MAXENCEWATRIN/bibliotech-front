@@ -1,6 +1,6 @@
 import type { OwnerResponse } from './OwnerResponse';
   
-  export interface GetOneOwnerRequest {
+  export interface GetOneOwnerResponse {
     success: boolean;
     data: OwnerResponse;
   }
