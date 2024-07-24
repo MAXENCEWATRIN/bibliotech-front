@@ -13,13 +13,12 @@ export default defineComponent({
 </script>
 
 <template>
-  <div id="app" class="w-full bg-gray-800 text-white py-6">
+
     <TitleApp />
     <main>
       <router-view></router-view>
     </main>
     <NavigationMenu />
-  </div>
 </template>
 
 <style>

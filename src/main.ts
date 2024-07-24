@@ -10,7 +10,6 @@ import router from './router'
 import { connectWebSocket, disconnectWebSocket } from './service/websocket-book'
 import { useBookStore } from './store/bookStore'
 
-
 const app = createApp(App)
 const pinia = createPinia()
 

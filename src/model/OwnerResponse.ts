@@ -1,5 +1,7 @@
   
   export interface OwnerResponse {
-    // Définir les champs de OwnerResponse ici
+    id: number | null;
+    firstName: string | null;
+    lastName: string | null;
   }
   

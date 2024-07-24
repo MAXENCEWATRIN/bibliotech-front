@@ -1,5 +1,7 @@
   
   export interface LibraryResponse {
-    name: any;
-    // Définir les champs de LibraryResponse ici
+    id: number | null;
+    name: string | null;
+    location: string | null;
+    capacity: number | null;
   }
