@@ -1,7 +1,7 @@
   
   export interface LibraryResponse {
-    id: number;
-    name: string;
-    location: string;
-    capacity: number;
+    id: number | null;
+    name: string | null;
+    location: string | null;
+    capacity: number | null;
   }

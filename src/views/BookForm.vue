@@ -66,7 +66,8 @@
           <label for="editors" class="block mb-2 text-sm font-medium text-white dark:text-white">Editor :</label>
           <select v-model="selectedEditor"
             class="background-custom-color-form border border-gray-300 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/3 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-            <option v-for="editor in editorsResponse.data" :key="editor.id" :value="editor.id"> {{ editor.name }}, edition :
+            <option v-for="editor in editorsResponse.data" :key="editor.id" :value="editor.id"> {{ editor.name }},
+              edition :
               {{ editor.edition }}</option>
           </select>
           <div>
@@ -217,7 +218,7 @@
           </label>
         </div>
 
-        <button v-if="isEditMode" @click="deleteBook(book.id)" type="button"
+        <button v-if="isEditMode" @click="deleteBook(book)" type="button"
           class="mt-4 px-4 py-2 bg-red-600 text-white rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">Delete</button>
 
         <button type="submit"
@@ -254,10 +255,10 @@ import type { GetAllThemesResponse } from '../model/GetAllThemesResponse';
 import type { GetAllOwnersResponse } from '../model/GetAllOwnersResponse';
 import type { GetAllEditorsResponse } from '../model/GetAllEditorsResponse';
 import type { GetAllLibrariesResponse } from '../model/GetAllLibrariesResponse';
-import { EditorResponse } from '../model/EditorResponse';
-import { OwnerResponse } from '../model/OwnerResponse';
-import { ThemeResponse } from '../model/ThemeResponse';
-import { LibraryResponse } from '../model/LibraryResponse';
+import type { EditorResponse } from '../model/EditorResponse';
+import type { OwnerResponse } from '../model/OwnerResponse';
+import type { ThemeResponse } from '../model/ThemeResponse';
+import type { LibraryResponse } from '../model/LibraryResponse';
 
 
 export default defineComponent({
@@ -330,17 +331,17 @@ export default defineComponent({
       success: false,
       data: [],
     });
-    const selectedOwner = ref<String>('');
+    const selectedOwner = ref<number | null>(null);
     const editorsResponse = ref<GetAllEditorsResponse>({
       success: false,
       data: [],
     });
-    const selectedLibrary = ref<String>('');
+    const selectedLibrary = ref<number | null>(null);
     const librariesResponse = ref<GetAllLibrariesResponse>({
       success: false,
       data: [],
     });
-    const selectedEditor = ref<String>('');
+    const selectedEditor = ref<number | null>(null);
     const bookStore = useBookStore();
     const book = ref<BookResponse>(bookStore.book || {
       id: null,
@@ -348,28 +349,29 @@ export default defineComponent({
       oldIsbnId: null,
       title: '',
       authorName: '',
-      titleLong: '',
-      subtitle: '',
-      synopsis: '',
-      summary: '',
+      titleLong: null,
+      subtitle: null,
+      synopsis: null,
+      summary: null,
       numberOfPage: 0,
-      openLibraryId: '',
-      coverPageUrl: '',
-      cover: '',
-      traductionLanguage: '',
+      openLibraryId: null,
+      coverPageUrl: null,
+      cover: null,
+      coverImageId: null,
+      traductionLanguage: null,
       initialLanguage: '',
       firstPublishYear: 0,
-      firstSentence: '',
-      editor: {},
-      library: {},
-      themes: [],
-      owner: {},
-      isWishList: false,
-      overallReception: '',
-      praises: '',
-      criticisms: '',
-      isAnOpenLibaryApiRegister: false,
-      isAnOpenLibaryApiBookValidate: false
+      firstSentence: null,
+      editor: null,
+      library: null,
+      themes: null,
+      owner: null,
+      isWishList: null,
+      overallReception: null,
+      praises: null,
+      criticisms: null,
+      isAnOpenLibaryApiRegister: null,
+      isAnOpenLibaryApiBookValidate: null
     });
     const promptGoogleSearch = ref<String>('');
 
@@ -398,7 +400,7 @@ export default defineComponent({
 
     const handleFormSubmitAddEditor = async (editor: EditorResponse) => {
       try {
-      const editorResponse =  await editorService.saveEditor(editor, false)
+        const editorResponse = await editorService.saveEditor(editor, false)
         if (editorResponse.status === 200) {
           editorsResponse.value.data.push(editorResponse.data.data);
           console.log("L'éditeur à été ajouté avec succès et la liste mise à jour.");
@@ -456,12 +458,17 @@ export default defineComponent({
             book.value = bookResponse.data.data;
             //All values of select elements are set in the retrievesAllSubsidariesElement method
             //Selected elements need to be set
-            selectedEditor.value = book.value.editor?.id;
-            selectedOwner.value = book.value.owner?.id;
-            selectedLibrary.value = book.value.library?.id
-            selectedThemes.value = book.value.themes?.map(theme => theme.id);
+            selectedEditor.value = book.value.editor?.id ?? null;
+            selectedOwner.value = book.value.owner?.id ?? null;
+            selectedLibrary.value = book.value.library?.id ?? null;
+            if (book.value.themes != null) {
+              selectedThemes.value = book.value.themes
+                .map(theme => theme.id)
+                .filter((id): id is number => id !== null);
+            }
             try {
               const bookCoverResponse = await bookService.getBookCover(Number(route.params.id));
+              
               if (bookCoverResponse.status === 200) {
                 console.log("La couverture du livre a été récupérée avec succès.");
                 book.value.cover = URL.createObjectURL(bookCoverResponse.data);
@@ -516,22 +523,57 @@ export default defineComponent({
     }
     const saveBook = async () => {
       try {
-        if (selectedThemes.value) {
-          book.value.themes = selectedThemes.value.map(themeId => {
-            const theme = themesResponse.value.data.find(t => t.id === themeId);
-            return theme ? { id: theme.id, name: theme.name } : {};
-          });
+        if (selectedOwner.value !== null) {
+          const owner = ownersResponse.value.data.find(owner => owner.id === selectedOwner.value);
+          if (owner) {
+            book.value.owner = {
+              id: owner.id,
+              firstName: owner.firstName,
+              lastName: owner.lastName
+            };
+          } else {
+            book.value.owner = null;
+          }
+        } else {
+          book.value.owner = null;
         }
-        if (selectedOwner.value) {
-          book.value.owner = ownersResponse.value.data.find(owner => owner.id === selectedOwner.value) || {};
+
+
+        if (selectedEditor.value !== null) {
+          const editor = editorsResponse.value.data.find(editor => editor.id === selectedEditor.value);
+          if (editor) {
+            book.value.editor = {
+              id: editor.id,
+              name: editor.name,
+              category: editor.category,
+              edition: editor.edition
+            };
+          } else {
+            book.value.editor = null;
+          }
+        } else {
+          book.value.editor = null;
         }
-        if (selectedEditor.value) {
-          console.log('valeur de lediteur' + selectedEditor.value)
-          book.value.editor.id = selectedEditor.value;
-          console.log('valeur de lediteur APRES' + book.value.editor)
+        if (selectedLibrary.value !== null) {
+          const library = librariesResponse.value.data.find(library => library.id === selectedLibrary.value);
+          if (library) {
+            book.value.library = {
+              id: library.id,
+              name: library.name,
+              location: library.location,
+              capacity: library.capacity
+            };
+          } else {
+            book.value.editor = null;
+          }
+        } else {
+          book.value.editor = null;
         }
-        if (selectedLibrary.value) {
-          book.value.library.id = selectedLibrary.value;
+        if (selectedThemes.value != null) {      
+          book.value.themes = selectedThemes.value.map(themeIdSelected => {
+            const validTheme = themesResponse.value.data.find(t => t.id === themeIdSelected);
+            return validTheme ? { id: validTheme.id, name: validTheme.name, keywords: validTheme.keywords } : null;
+          }).filter((theme): theme is ThemeResponse => theme !== null);
         }
         await bookService.saveBook(book.value, isEditMode.value);
         router.push('/');
@@ -540,9 +582,9 @@ export default defineComponent({
       }
     };
 
-    const deleteBook = async (id: number) => {
+    const deleteBook = async (book: any) => {
       try {
-        await bookService.deleteBook(id);
+        await bookService.deleteBook(book);
         router.push('/');
       } catch (error) {
         console.error('Error deleting book:', error);

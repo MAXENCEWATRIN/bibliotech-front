@@ -1,6 +1,6 @@
 export interface EditorResponse {
-  id: number;
-  name: string;
-  category: string;
-  edition: string;
+  id: number | null;
+  name: string | null;
+  category: string | null;
+  edition: string | null;
   }

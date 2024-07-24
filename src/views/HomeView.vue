@@ -72,7 +72,7 @@ export default defineComponent({
           try {
             const bookCoverResponse = await bookService.getBookCover(book.id);
             if (bookCoverResponse.status === 200) {
-              console.log("La couverture du livre a été récupérée avec succès.");
+              //console.log("La couverture du livre a été récupérée avec succès.");
               book.cover = URL.createObjectURL(bookCoverResponse.data);
             } else {
               console.error(`Erreur lors de la récupération de la couverture du livre, statut : ${bookCoverResponse.status}`);

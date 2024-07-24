@@ -81,7 +81,9 @@
               num: 10
             }
           });
-          this.results = response.data.items.map(item => ({ link: item.link }));
+          this.results = response.data.items
+          .filter(item => item.link.toLowerCase().endsWith('.jpeg') || item.link.toLowerCase().endsWith('.jpg'))
+          .map(item => ({ link: item.link }));
         } catch (err) {
           this.error = 'Failed to fetch images. Please try again.';
           console.error(err);

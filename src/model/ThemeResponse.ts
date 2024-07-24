@@ -1,5 +1,5 @@
 export interface ThemeResponse {
-  id: number;
-  name: string;
-  keywords: string[];
+  id: number | null;
+  name: string | null;
+  keywords: string[] | null;
   }

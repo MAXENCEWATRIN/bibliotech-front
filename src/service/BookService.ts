@@ -36,9 +36,11 @@ export default {
     }
   },
 
-  async deleteBook(id: number): Promise<void> {
+  async deleteBook(book : any): Promise<void> {
     try {
-      await apiBibliotechClient.delete(`/books/${id}`);
+      await apiBibliotechClient.delete(`/books/${book.id}`, {
+        data: book
+      });
     } catch (error) {
       console.error('Error deleting book:', error);
       throw error; 
