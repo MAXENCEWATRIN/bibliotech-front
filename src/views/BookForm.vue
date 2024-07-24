@@ -447,6 +447,7 @@ export default defineComponent({
       retrievesAllSubsidariesElement();
       if (bookStore.book) {
         book.value = bookStore.book;
+        book.value.cover = bookStore.book.coverPageUrl;
         bookStore.clearBook();
         promptGoogleSearch.value = book.value.title + ', ' + book.value.authorName + ', ' + (book.value.editor ? 'editeur : ' + book.value.editor.name + ', edition :' + book.value.editor.edition + ', ' + book.value.firstPublishYear : '');
       } else if (route.params.id) {
