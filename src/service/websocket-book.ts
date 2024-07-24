@@ -20,7 +20,9 @@ export function connectWebSocket() {
             } else {
                 console.error('Failed to receive a valid book response');
             }
-            router.push({ name: 'BookForm' });
+            router.push({ name: 'Home' }).then(() => {
+                router.push({ name: 'BookForm'})
+              })
         });
     });
 }
